@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "canonicalInterfaces": {
+    "repository": "canonical-cloud/canonical-interfaces",
+    "commit": "4c6ca63ca24fa214a1cb1a917ac27f1d5265916a",
+    "goldenFixtureCommit": "c4944fcb1a35fae99a76897a0fedf37263fd11ad"
+  },
+  "canonicalApi": {
+    "repository": "canonical-cloud/canonical-api-server.rs",
+    "commit": "7987c05944df5c03ff2fcbeeedf2c8e79f973d75"
+  },
+  "canonicalWeb": {
+    "repository": "canonical-cloud/canonical-web-server.rs",
+    "commit": "98b3e2b5d02e5f49687bfd777ec2b79a3f4d7f26"
+  },
+  "fixtureDirectory": "fixtures/quote/v1",
+  "fixtureGitBlobs": {
+    "manifest.json": "f055969fefe020e89562c5c74c1e31cffc5e43be",
+    "request.json": "fe8bf1ad08a7152d44ead22ee0d082842d28b208",
+    "submission-response.json": "413c11dc9092f42beec34cbfa93b0cdafc604665",
+    "estimate.json": "b05e342af21dd0187510ae8155448252c890f6af",
+    "status-event.json": "ef2c5a6b143ad596a133f71d120e83091ddcb810",
+    "problem.json": "96166c2ab6dccfcb62fb3ce30aca436ce3fc59cc"
+  }
+}
