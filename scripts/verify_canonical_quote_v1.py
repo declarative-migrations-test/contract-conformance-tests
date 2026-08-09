@@ -48,16 +48,27 @@ for name, expected_blob in CONTRACT["fixtureGitBlobs"].items():
     authoritative = interface_fixtures / name
     if git_blob(authoritative) != expected_blob:
         raise SystemExit(f"authoritative fixture blob mismatch: {name}")
-    for consumer_name, consumer_root in (("api", api_fixtures), ("web", web_fixtures)):
-        candidate = consumer_root / name
-        if not candidate.is_file() or candidate.read_bytes() != authoritative.read_bytes():
-            raise SystemExit(f"{consumer_name} fixture drift: {name}")
+    web_candidate = web_fixtures / name
+    if not web_candidate.is_file() or web_candidate.read_bytes() != authoritative.read_bytes():
+        raise SystemExit(f"web fixture drift: {name}")
+
+# The API embeds only the request fixture because its accepted response and
+# durable record are generated from live server state. Those outputs are
+# certified by API tests; do not manufacture duplicate static response files.
+api_request = api_fixtures / "request.json"
+interface_request = interface_fixtures / "request.json"
+if not api_request.is_file() or api_request.read_bytes() != interface_request.read_bytes():
+    raise SystemExit("api request fixture drift")
 
 manifest = load_json(interface_fixtures / "manifest.json")
-if manifest.get("schemaVersion") != 1 or manifest.get("wireCase") != "camelCase":
-    raise SystemExit("quote fixture manifest drift")
+web_manifest = load_json(web_fixtures / "manifest.json")
+for candidate_name, candidate in (("interfaces", manifest), ("web", web_manifest)):
+    if candidate.get("schemaVersion") != 1 or candidate.get("wireCase") != "camelCase":
+        raise SystemExit(f"{candidate_name} quote fixture manifest drift")
+    if candidate.get("fixtures") != manifest.get("fixtures"):
+        raise SystemExit(f"{candidate_name} fixture inventory drift")
 
-request = load_json(interface_fixtures / "request.json")
+request = load_json(interface_request)
 expected_fields = {
     "organizationName",
     "contactName",
