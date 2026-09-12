@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/declarative-migrations-test/contract-conformance-tests/schema-authority/authored.schema.json",
+  "$defs": {
+    "EngineKind": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "EngineKind",
+      "type": "string",
+      "enum": ["postgres", "cockroachdb"]
+    },
+    "MigrationIntent": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "MigrationIntent",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "migrationId": { "type": "string", "minLength": 1 },
+        "engine": { "$ref": "EngineKind" },
+        "desiredStateDigest": { "type": "string", "minLength": 1 },
+        "transactional": { "type": "boolean" }
+      },
+      "required": ["migrationId", "engine", "desiredStateDigest", "transactional"]
+    }
+  }
+}
